@@ -260,13 +260,14 @@
 
     <div id="dynamic-bg"></div>
 
-    <div id="boot-screen" onclick="enableAudio()">
-        <div id="boot-loader">
-            </div>
+    <div id="boot-screen">
+        <div id="start-prompt" style="text-align: center; margin: auto; font-size: 1.2rem; cursor: pointer; color: var(--cyan); animation: blink 1s infinite; text-shadow: 0 0 10px var(--cyan);">
+            > INICIAR PROTOCOLO DE CONEXÃO (CLIQUE AQUI) _
+        </div>
+        <div id="boot-loader"></div>
         <div id="final-stat">
             [ <span style="color:var(--cyan)">ACESSO LIBERADO</span> ]
         </div>
-        <p style="text-align: center; color: #444; font-size: 0.7rem; margin-top: auto;">(Clique na tela para ativar o som do terminal)</p>
     </div>
 
     <div id="main-content">
@@ -451,74 +452,78 @@
         }
     }
 
-    // --- Lógica da Intro de Boot ---
+    // --- LÓGICA DA INTRO DE BOOT ---
     const bootLoader = document.getElementById('boot-loader');
     const bootScreen = document.getElementById('boot-screen');
     const mainContent = document.getElementById('main-content');
     const finalStat = document.getElementById('final-stat');
+    const startPrompt = document.getElementById('start-prompt');
+    let bootStarted = false; // Garante que a animação só inicie uma vez
 
-    // Checa se o usuário já viu o boot nesta sessão para melhorar a UX
-    const hasSeenBoot = sessionStorage.getItem('bootPlayed');
+    const bootSequence = [
+        { t: "> INIT ENG_COMP_PROTOCOL v20.26...", c: "hl", d: 500, b: 800 },
+        { t: "> CARREGANDO ASSINATURA DIGITAL: [GIOVANNI BORDIN OSÉAS]", c: "ok", d: 300 },
+        { t: "> VERIFICANDO AUTOMATION_&_RPA_TOOLS...", c: "ok", d: 200, b: 400 },
+        { t: "> [+] Node.js Scrapers ... OK", c: "ok", d: 100 },
+        { t: "> [+] AutoHotkey Scripts ... OK", c: "ok", d: 100 },
+        { t: "> INICIANDO SUBSISTEMAS ERP & IDE...", c: "warn", d: 600, b: 300 },
+        { t: "> STATUS: INTELLIGENCE PLATFORM ONLINE...", c: "warn", d: 1000 },
+        { t: "> FINALIZANDO SETUP DE AMBIENTE...", c: "ok", d: 200 },
+        { t: "> <span class='scan-bar'></span>", c: "", d: 2100 },
+        { t: "> TUDO PRONTO. BEM-VINDO AO CORE.", c: "hl", d: 300, b: 1500 }
+    ];
 
-    if (hasSeenBoot) {
-        bootScreen.style.display = 'none';
-        mainContent.style.display = 'block';
-        mainContent.style.opacity = '1';
-    } else {
-        const bootSequence = [
-            { t: "> INIT ENG_COMP_PROTOCOL v20.26...", c: "hl", d: 500, b: 800 },
-            { t: "> CARREGANDO ASSINATURA DIGITAL: [GIOVANNI BORDIN OSÉAS]", c: "ok", d: 300 },
-            { t: "> VERIFICANDO AUTOMATION_&_RPA_TOOLS...", c: "ok", d: 200, b: 400 },
-            { t: "> [+] Node.js Scrapers ... OK", c: "ok", d: 100 },
-            { t: "> [+] AutoHotkey Scripts ... OK", c: "ok", d: 100 },
-            { t: "> INICIANDO SUBSISTEMAS ERP & IDE...", c: "warn", d: 600, b: 300 },
-            { t: "> STATUS: INTELLIGENCE PLATFORM ONLINE...", c: "warn", d: 1000 },
-            { t: "> FINALIZANDO SETUP DE AMBIENTE...", c: "ok", d: 200 },
-            { t: "> <span class='scan-bar'></span>", c: "", d: 2100 },
-            { t: "> TUDO PRONTO. BEM-VINDO AO CORE.", c: "hl", d: 300, b: 1500 }
-        ];
+    let sequenceIndex = 0;
 
-        let sequenceIndex = 0;
-
-        function printNextLine() {
-            if (sequenceIndex < bootSequence.length) {
-                const lineData = bootSequence[sequenceIndex];
-                const lineEl = document.createElement('div');
-                lineEl.className = `boot-line ${lineData.c}`;
-                lineEl.innerHTML = lineData.t;
-                
-                if (lineData.b) playBeep(lineData.b, lineData.d / 1000 + 0.1);
-                else playBeep(600, 0.01);
-
-                bootLoader.appendChild(lineEl);
-                bootScreen.scrollTop = bootScreen.scrollHeight;
-
-                sequenceIndex++;
-                setTimeout(printNextLine, lineData.d);
-            } else {
-                finalStat.style.display = "block";
-                setTimeout(finishBoot, 2000);
-            }
-        }
-
-        function finishBoot() {
-            playBeep(1200, 0.1);
-            setTimeout(() => playBeep(1600, 0.2), 100);
+    function printNextLine() {
+        if (sequenceIndex < bootSequence.length) {
+            const lineData = bootSequence[sequenceIndex];
+            const lineEl = document.createElement('div');
+            lineEl.className = `boot-line ${lineData.c}`;
+            lineEl.innerHTML = lineData.t;
             
-            bootScreen.style.display = "none";
-            mainContent.style.display = "block";
-            setTimeout(() => mainContent.style.opacity = "1", 50);
-            sessionStorage.setItem('bootPlayed', 'true');
-        }
+            if (lineData.b) playBeep(lineData.b, lineData.d / 1000 + 0.1);
+            else playBeep(600, 0.01);
 
-        window.addEventListener('load', () => {
-            const cursor = document.createElement('span');
-            cursor.id = 'boot-cursor';
-            bootLoader.appendChild(cursor);
-            setTimeout(printNextLine, 1000);
-        });
+            bootLoader.appendChild(lineEl);
+            bootScreen.scrollTop = bootScreen.scrollHeight;
+
+            sequenceIndex++;
+            setTimeout(printNextLine, lineData.d);
+        } else {
+            finalStat.style.display = "block";
+            setTimeout(finishBoot, 2000);
+        }
     }
 
+    function finishBoot() {
+        playBeep(1200, 0.1);
+        setTimeout(() => playBeep(1600, 0.2), 100);
+        
+        bootScreen.style.display = "none";
+        mainContent.style.display = "block";
+        setTimeout(() => mainContent.style.opacity = "1", 50);
+    }
+
+    // O GATILHO: Espera o clique para contornar o bloqueio de áudio do navegador
+    bootScreen.addEventListener('click', () => {
+        if (bootStarted) return;
+        bootStarted = true;
+        
+        // Destrava o contexto de áudio
+        audioEnabled = true;
+        if (audioCtx.state === 'suspended') audioCtx.resume();
+        
+        // Esconde a mensagem inicial e cria o cursor piscante
+        startPrompt.style.display = 'none';
+        const cursor = document.createElement('span');
+        cursor.id = 'boot-cursor';
+        bootLoader.appendChild(cursor);
+        
+        // Dispara o primeiro bipe e começa o terminal
+        playBeep(1000, 0.1);
+        setTimeout(printNextLine, 500);
+    });
     // --- LÓGICA DO ENVIRONMENT OVERRIDE (SPOTIFY IFRAMES) ---
     const themes = ['default', 'rock', 'west', 'jungle', 'ice', 'car', 'universe'];
     const spotifyContainer = document.getElementById('spotify-container');
