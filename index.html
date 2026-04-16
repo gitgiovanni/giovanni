@@ -99,7 +99,7 @@
 
         .tech-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; margin-top: 10px; }
         .tech-item { display: flex; flex-direction: column; align-items: center; gap: 5px; }
-        .tech-item img { width: 32px; height: 32px; filter: drop-shadow(0 0 5px var(--cyan)); object-fit: contain; }
+        .tech-item img, .tech-item svg { width: 32px; height: 32px; filter: drop-shadow(0 0 5px var(--cyan)); object-fit: contain; }
         .tech-item span { font-size: 0.55rem; color: #81D4FA; font-family: 'Orbitron'; text-align: center; }
 
         .project-item { margin-bottom: 20px; padding-bottom: 15px; border-bottom: 1px solid rgba(255,255,255,0.05); }
@@ -191,11 +191,29 @@
                 <h2 class="section-title">SISTEMAS & TECNOLOGIAS</h2>
                 <div class="tech-grid">
                     <div class="tech-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/vscode/vscode-original.svg"><span>VS CODE</span></div>
+                    <div class="tech-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/eclipse/eclipse-original.svg"><span>ECLIPSE IDE</span></div>
                     <div class="tech-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/github/github-original.svg"><span>GITHUB</span></div>
-                    <div class="tech-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/arduino/arduino-original.svg"><span>ESP32/IoT</span></div>
-                    <div class="tech-item"><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjMDBFNUZGIiBzdHJva2Utd2lkdGg9IjIiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCI+PHBhdGggZD0iTTEyIDJMMiA3bDEwIDUgMTAtNXoiLz48cGF0aCBkPSJNMiAxN2wxMCA1IDEwLTVtLTIwLTVsMTAgNSAxMC01Ii8+PC9zdmc+"><span>PUPPETEER</span></div>
-                    <div class="tech-item"><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjMDBFNUZGIiBzdHJva2Utd2lkdGg9IjIiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCI+PHBhdGggZD0iTTEyIDIyczgtNCA4LTEwVjVsLTgtMy04IDN2N2MwIDYgOCAxMCA4IDEweiIvPjwvc3ZnPg=="><span>AUTOHOTKEY</span></div>
+                    <div class="tech-item">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="#00E5FF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <ellipse cx="12" cy="5" rx="9" ry="3"></ellipse>
+                            <path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"></path>
+                            <path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"></path>
+                        </svg>
+                        <span>PROTHEUS</span>
+                    </div>
                     <div class="tech-item"><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjMDBFNUZGIiBzdHJva2Utd2lkdGg9IjIiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCI+PHBhdGggZD0iTTIxIDE2VjhBMiAyIDAgMCAwIDE5IDZINUEyIDIgMCAwIDAgMyA4djhBMiAyIDAgMCAwIDUgMThoMTRBMiAyIDAgMCAwIDIxIDE2eiIvPjxwb2x5Z29uIHBvaW50cz0iMTIgMTIgMTYgMTUgMTIgMTgiLz48L3N2Zz4="><span>TOTVS FLUIG</span></div>
+                    <div class="tech-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/google/google-original.svg"><span>WORKSPACE</span></div>
+                    <div class="tech-item">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="#00E5FF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                            <polyline points="14 2 14 8 20 8"></polyline>
+                            <line x1="16" y1="13" x2="8" y2="13"></line>
+                            <line x1="16" y1="17" x2="8" y2="17"></line>
+                            <polyline points="10 9 9 9 8 9"></polyline>
+                        </svg>
+                        <span>MS OFFICE</span>
+                    </div>
+                    <div class="tech-item"><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjMDBFNUZGIiBzdHJva2Utd2lkdGg9IjIiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCI+PHBhdGggZD0iTTEyIDIyczgtNCA4LTEwVjVsLTgtMy04IDN2N2MwIDYgOCAxMCA4IDEweiIvPjwvc3ZnPg=="><span>AUTOHOTKEY</span></div>
                 </div>
             </div>
 
@@ -217,9 +235,9 @@
                     <p class="project-desc">Interface integrada para monitoramento de encomendas e gestão de status logístico em tempo real.</p>
                 </div>
                 <div class="project-item">
-                    <span class="project-label">CORPORATE INFRA</span>
+                    <span class="project-label">CORPORATE INFRA & DATA</span>
                     <span class="project-name">INTELLIGENCE PLATFORM</span>
-                    <p class="project-desc">Implementação de domínio corporativo mascarado para plataforma de inteligência interna, com configurações complexas de DNS e roteamento.</p>
+                    <p class="project-desc">Hub central de Business Intelligence e análise de dados operacionais da empresa. Envolveu a implementação de um domínio corporativo mascarado para acesso restrito, garantindo segurança através de configurações avançadas de DNS e roteamento interno (IP apontado).</p>
                 </div>
             </div>
 
@@ -270,7 +288,7 @@
         const finalStat = document.getElementById('final-stat');
         let audioEnabled = false;
 
-        // Sons de terminal (frequências de bip)
+        // Sons de terminal
         const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
         function playBeep(freq, duration) {
             if (!audioEnabled) return;
@@ -285,7 +303,6 @@
             oscillator.stop(audioCtx.currentTime + duration);
         }
 
-        // Ativar áudio no primeiro clique
         function enableAudio() {
             if (!audioEnabled) {
                 audioEnabled = true;
@@ -293,7 +310,6 @@
             }
         }
 
-        // Sequência de linhas do boot adaptada
         const bootSequence = [
             { t: "> INIT ENG_COMP_PROTOCOL v20.26...", c: "hl", d: 500, b: 800 },
             { t: "> CARREGANDO ASSINATURA DIGITAL: [GIOVANNI BORDIN OSÉAS]", c: "ok", d: 300 },
@@ -302,15 +318,14 @@
             { t: "> [+] Puppeteer Bots ... OK", c: "ok", d: 100 },
             { t: "> [+] AutoHotkey Scripts ... OK", c: "ok", d: 100 },
             { t: "> [+] Windows Server Env ... OK", c: "ok", d: 200 },
-            { t: "> INICIANDO SUBSISTEMA TOTVS FLUIG...", c: "warn", d: 600, b: 300 },
+            { t: "> INICIANDO SUBSISTEMAS ERP & IDE...", c: "warn", d: 600, b: 300 },
+            { t: "> [+] Protheus Database ... OK", c: "ok", d: 100 },
+            { t: "> [+] Eclipse Environment ... OK", c: "ok", d: 100 },
             { t: "> CARREGANDO APIs: [SISTEMA DE RASTREIO]...", c: "ok", d: 400 },
             { t: "> [!] INICIALIZANDO FIRMWARE DO TCC (ESP32_SMART_CAR)...", c: "hl", d: 500, b: 1200 },
-            { t: "> CONECTANDO SENSORES E CONTROLE BLUETOOTH...", c: "warn", d: 300 },
-            { t: "  [ PING ] RESPOSTA RECEBIDA...", c: "warn", d: 200, b: 200 },
-            { t: "> STATUS: INFRAESTRUTURA CORPORATIVA ONLINE...", c: "warn", d: 1000 },
+            { t: "> STATUS: INTELLIGENCE PLATFORM (BI HUB) ONLINE...", c: "warn", d: 1000 },
             { t: "> MASCARAMENTO DE DNS INTERNO: BEM-SUCEDIDO.", c: "ok", d: 300, b: 900 },
             { t: "> SINCROINZANDO METAS INTERNACIONAIS DE MACHINE LEARNING...", c: "ok", d: 100, b: 300 },
-            { t: "> CARREGANDO PLAYLIST: [AVENGED SEVENFOLD / METALLICA]...", c: "hl", d: 400 },
             { t: "> FINALIZANDO SETUP DE AMBIENTE [AUTOMATION ARCHITECT]...", c: "ok", d: 200 },
             { t: "> <span class='scan-bar'></span>", c: "", d: 2100 },
             { t: "> TUDO PRONTO. BEM-VINDO AO CORE.", c: "hl", d: 300, b: 1500 }
