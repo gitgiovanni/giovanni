@@ -82,20 +82,34 @@
             display: flex; gap: 8px;
             background: var(--glass-bg);
             border: 1px solid var(--glass-border);
-            padding: 8px; border-radius: 30px;
+            padding: 8px; border-radius: 12px; /* Deixei mais quadrado para combinar */
             backdrop-filter: blur(10px);
             z-index: 100000;
         }
+        
         .lang-btn {
-            background: transparent; border: none; font-size: 1.4rem; cursor: pointer;
-            filter: grayscale(100%) opacity(0.5); transition: all 0.3s ease;
+            background: transparent; 
+            border: 1px solid transparent; 
+            color: #555; /* Cor apagada quando inativo */
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 700;
+            font-size: 0.85rem;
+            padding: 4px 8px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s ease;
             outline: none;
         }
+        
         .lang-btn.active {
-            filter: grayscale(0%) opacity(1); transform: scale(1.1);
+            color: var(--cyan);
+            border-color: var(--cyan);
+            text-shadow: 0 0 5px var(--cyan);
+            box-shadow: 0 0 10px rgba(0, 229, 255, 0.2);
         }
-        .lang-btn:hover {
-            filter: grayscale(0%) opacity(1);
+        
+        .lang-btn:hover:not(.active) {
+            color: #fff;
         }
 
         /* Layer do Background Imagem Dynamic */
@@ -213,10 +227,12 @@
 
         /* Estilos do Seletor de Temas & Spotify */
         .theme-selector { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-top: 15px; }
-        .theme-btn { 
+.theme-btn { 
             background: rgba(0,0,0,0.5); border: 1px solid var(--glass-border); border-radius: 8px; 
             padding: 10px 5px; color: #fff; font-family: 'Orbitron'; font-size: 0.65rem; font-weight: 700;
             cursor: pointer; transition: 0.3s; display: flex; flex-direction: column; align-items: center; gap: 6px;
+            white-space: nowrap; /* Previne a quebra de linha que estava esticando o botão */
+            overflow: hidden;
         }
         .theme-btn:hover { background: var(--glass-border); transform: translateY(-2px); }
         .theme-btn span { font-size: 1.3rem; }
@@ -283,8 +299,8 @@
     </style>
 </head>
 <body class="lang-pt"> <div class="lang-switcher">
-        <button class="lang-btn active" id="btn-lang-pt" onclick="setLang('pt')" title="Português">🇧🇷</button>
-        <button class="lang-btn" id="btn-lang-en" onclick="setLang('en')" title="English">🇬🇧</button>
+        <button class="lang-btn active" id="btn-lang-pt" onclick="setLang('pt')" title="Português">PT</button>
+        <button class="lang-btn" id="btn-lang-en" onclick="setLang('en')" title="English">EN</button>
     </div>
 
     <div id="dynamic-bg"></div>
