@@ -219,6 +219,33 @@
             opacity: 1;
             height: 152px; /* Altura exata do iframe do Spotify */
         }
+        /* =========================================
+   ESTILOS DA AURA DO MOUSE
+   ========================================= */
+#mouse-aura {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    /* Usa a cor cyan do tema atual com transparência e blur para o glow */
+    background-color: var(--cyan);
+    opacity: 0.4;
+    filter: blur(10px);
+    pointer-events: none; /* Crucial: garante que a aura não bloqueie seus cliques */
+    z-index: 99999;
+    /* Transição suave apenas para a cor e tamanho, NÃO para o transform */
+    transition: background-color 1s ease, width 0.3s ease, height 0.3s ease, opacity 0.3s ease;
+}
+
+/* Classe ativada via JS quando o mouse passa em botões/links */
+#mouse-aura.aura-hover {
+    width: 60px;
+    height: 60px;
+    opacity: 0.7;
+    background-color: var(--purple); /* Troca de cor no hover para dar feedback visual */
+}
         @media (max-width: 600px) {
     .tech-grid {
         grid-template-columns: repeat(2, 1fr);
@@ -396,6 +423,49 @@
             </div>
         </div>
     </div>
+
+    <div id="mouse-aura"></div>
+
+<script>
+    // --- LÓGICA DA AURA DO MOUSE ---
+    const aura = document.getElementById('mouse-aura');
+    let mouseX = window.innerWidth / 2; // Posição inicial no meio da tela
+    let mouseY = window.innerHeight / 2;
+    let auraX = mouseX;
+    let auraY = mouseY;
+
+    // Rastreia a posição real do mouse
+    window.addEventListener('mousemove', (e) => {
+        mouseX = e.clientX;
+        mouseY = e.clientY;
+    });
+
+    // Função de animação com Lerp (suavização)
+    function animateAura() {
+        // O valor 0.15 controla a "lentidão" do rastro. Quanto menor, mais atrasado.
+        auraX += (mouseX - auraX) * 0.15;
+        auraY += (mouseY - auraY) * 0.15;
+        
+        // Centraliza a div da aura (compensando largura e altura)
+        const offset = aura.offsetWidth / 2;
+        aura.style.transform = `translate(${auraX - offset}px, ${auraY - offset}px)`;
+        
+        requestAnimationFrame(animateAura);
+    }
+    animateAura();
+
+    // Adiciona interatividade aos links e botões
+    const interactables = document.querySelectorAll('a, button, .theme-btn');
+    
+    interactables.forEach(el => {
+        el.addEventListener('mouseenter', () => {
+            aura.classList.add('aura-hover');
+        });
+        el.addEventListener('mouseleave', () => {
+            aura.classList.remove('aura-hover');
+        });
+    });
+</script>
 
     <script>
         // --- Lógica da Intro de Boot ---
