@@ -427,75 +427,44 @@
     <div id="mouse-aura"></div>
 
 <script>
-    // --- LÓGICA DA AURA DO MOUSE ---
-    const aura = document.getElementById('mouse-aura');
-    let mouseX = window.innerWidth / 2; // Posição inicial no meio da tela
-    let mouseY = window.innerHeight / 2;
-    let auraX = mouseX;
-    let auraY = mouseY;
-
-    // Rastreia a posição real do mouse
-    window.addEventListener('mousemove', (e) => {
-        mouseX = e.clientX;
-        mouseY = e.clientY;
-    });
-
-    // Função de animação com Lerp (suavização)
-    function animateAura() {
-        // O valor 0.15 controla a "lentidão" do rastro. Quanto menor, mais atrasado.
-        auraX += (mouseX - auraX) * 0.15;
-        auraY += (mouseY - auraY) * 0.15;
-        
-        // Centraliza a div da aura (compensando largura e altura)
-        const offset = aura.offsetWidth / 2;
-        aura.style.transform = `translate(${auraX - offset}px, ${auraY - offset}px)`;
-        
-        requestAnimationFrame(animateAura);
-    }
-    animateAura();
-
-    // Adiciona interatividade aos links e botões
-    const interactables = document.querySelectorAll('a, button, .theme-btn');
+    // --- LÓGICA DO ÁUDIO ---
+    let audioEnabled = false;
+    const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
     
-    interactables.forEach(el => {
-        el.addEventListener('mouseenter', () => {
-            aura.classList.add('aura-hover');
-        });
-        el.addEventListener('mouseleave', () => {
-            aura.classList.remove('aura-hover');
-        });
-    });
-</script>
+    function playBeep(freq, duration) {
+        if (!audioEnabled) return;
+        const oscillator = audioCtx.createOscillator();
+        const gainNode = audioCtx.createGain();
+        oscillator.type = 'square';
+        oscillator.frequency.setValueAtTime(freq, audioCtx.currentTime);
+        gainNode.gain.setValueAtTime(0.01, audioCtx.currentTime); 
+        oscillator.connect(gainNode);
+        gainNode.connect(audioCtx.destination);
+        oscillator.start();
+        oscillator.stop(audioCtx.currentTime + duration);
+    }
 
-    <script>
-        // --- Lógica da Intro de Boot ---
-        const bootLoader = document.getElementById('boot-loader');
-        const bootScreen = document.getElementById('boot-screen');
-        const mainContent = document.getElementById('main-content');
-        const finalStat = document.getElementById('final-stat');
-        let audioEnabled = false;
-
-        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-        function playBeep(freq, duration) {
-            if (!audioEnabled) return;
-            const oscillator = audioCtx.createOscillator();
-            const gainNode = audioCtx.createGain();
-            oscillator.type = 'square';
-            oscillator.frequency.setValueAtTime(freq, audioCtx.currentTime);
-            gainNode.gain.setValueAtTime(0.01, audioCtx.currentTime); 
-            oscillator.connect(gainNode);
-            gainNode.connect(audioCtx.destination);
-            oscillator.start();
-            oscillator.stop(audioCtx.currentTime + duration);
+    function enableAudio() {
+        if (!audioEnabled) {
+            audioEnabled = true;
+            if (audioCtx.state === 'suspended') audioCtx.resume();
         }
+    }
 
-        function enableAudio() {
-            if (!audioEnabled) {
-                audioEnabled = true;
-                if (audioCtx.state === 'suspended') audioCtx.resume();
-            }
-        }
+    // --- Lógica da Intro de Boot ---
+    const bootLoader = document.getElementById('boot-loader');
+    const bootScreen = document.getElementById('boot-screen');
+    const mainContent = document.getElementById('main-content');
+    const finalStat = document.getElementById('final-stat');
 
+    // Checa se o usuário já viu o boot nesta sessão para melhorar a UX
+    const hasSeenBoot = sessionStorage.getItem('bootPlayed');
+
+    if (hasSeenBoot) {
+        bootScreen.style.display = 'none';
+        mainContent.style.display = 'block';
+        mainContent.style.opacity = '1';
+    } else {
         const bootSequence = [
             { t: "> INIT ENG_COMP_PROTOCOL v20.26...", c: "hl", d: 500, b: 800 },
             { t: "> CARREGANDO ASSINATURA DIGITAL: [GIOVANNI BORDIN OSÉAS]", c: "ok", d: 300 },
@@ -539,6 +508,7 @@
             bootScreen.style.display = "none";
             mainContent.style.display = "block";
             setTimeout(() => mainContent.style.opacity = "1", 50);
+            sessionStorage.setItem('bootPlayed', 'true');
         }
 
         window.addEventListener('load', () => {
@@ -547,40 +517,79 @@
             bootLoader.appendChild(cursor);
             setTimeout(printNextLine, 1000);
         });
+    }
 
-        // --- LÓGICA DO ENVIRONMENT OVERRIDE (SPOTIFY IFRAMES) ---
-        const themes = ['default', 'rock', 'west', 'jungle', 'ice', 'car', 'universe'];
-        const spotifyContainer = document.getElementById('spotify-container');
+    // --- LÓGICA DO ENVIRONMENT OVERRIDE (SPOTIFY IFRAMES) ---
+    const themes = ['default', 'rock', 'west', 'jungle', 'ice', 'car', 'universe'];
+    const spotifyContainer = document.getElementById('spotify-container');
 
-        // Mapeamento dos Iframes exatamente como você enviou
-        const spotifyIframes = {
-            rock: '<iframe data-testid="embed-iframe" style="border-radius:12px" src="https://open.spotify.com/embed/track/6pAIZfkNBQh4RAiOliPo4t?utm_source=generator" width="100%" height="152" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>',
-            west: '<iframe data-testid="embed-iframe" style="border-radius:12px" src="https://open.spotify.com/embed/track/4mn2kNTqiGLwaUR8JdhJ1l?utm_source=generator" width="100%" height="152" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>',
-            jungle: '<iframe data-testid="embed-iframe" style="border-radius:12px" src="https://open.spotify.com/embed/track/0G21yYKMZoHa30cYVi1iA8?utm_source=generator&theme=0" width="100%" height="152" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>',
-            ice: '<iframe data-testid="embed-iframe" style="border-radius:12px" src="https://open.spotify.com/embed/track/0ncHMpFGT96pis5pi4iJDm?utm_source=generator&theme=0" width="100%" height="152" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>',
-            car: '<iframe data-testid="embed-iframe" style="border-radius:12px" src="https://open.spotify.com/embed/track/1G391cbiT3v3Cywg8T7DM1?utm_source=generator&theme=0" width="100%" height="152" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>',
-            universe: '<iframe data-testid="embed-iframe" style="border-radius:12px" src="https://open.spotify.com/embed/track/1OxcIUqVmVYxT6427tbhDW?utm_source=generator&theme=0" width="100%" height="152" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>'
-        };
-        
-        function activateTheme(themeName) {
-            // 1. Atualizar Estado dos Botões
-            themes.forEach(t => {
-                document.getElementById('btn-' + t).classList.remove('active');
-            });
-            document.getElementById('btn-' + themeName).classList.add('active');
+    const spotifyIframes = {
+        rock: '<iframe data-testid="embed-iframe" style="border-radius:12px" src="https://open.spotify.com/embed/track/6pAIZfkNBQh4RAiOliPo4t?utm_source=generator" width="100%" height="152" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>',
+        west: '<iframe data-testid="embed-iframe" style="border-radius:12px" src="https://open.spotify.com/embed/track/4mn2kNTqiGLwaUR8JdhJ1l?utm_source=generator" width="100%" height="152" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>',
+        jungle: '<iframe data-testid="embed-iframe" style="border-radius:12px" src="https://open.spotify.com/embed/track/0G21yYKMZoHa30cYVi1iA8?utm_source=generator&theme=0" width="100%" height="152" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>',
+        ice: '<iframe data-testid="embed-iframe" style="border-radius:12px" src="https://open.spotify.com/embed/track/0ncHMpFGT96pis5pi4iJDm?utm_source=generator&theme=0" width="100%" height="152" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>',
+        car: '<iframe data-testid="embed-iframe" style="border-radius:12px" src="https://open.spotify.com/embed/track/1G391cbiT3v3Cywg8T7DM1?utm_source=generator&theme=0" width="100%" height="152" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>',
+        universe: '<iframe data-testid="embed-iframe" style="border-radius:12px" src="https://open.spotify.com/embed/track/1OxcIUqVmVYxT6427tbhDW?utm_source=generator&theme=0" width="100%" height="152" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>'
+    };
+    
+    function activateTheme(themeName) {
+        // Efeito Sonoro Cyberpunk (só toca se o usuário já liberou o áudio)
+        playBeep(1200, 0.05);
+        setTimeout(() => playBeep(1800, 0.03), 50);
 
-            // 2. Trocar a Classe do Body (Aplica Cores e Background)
-            document.body.className = themeName === 'default' ? '' : 'theme-' + themeName;
+        // 1. Atualizar Estado dos Botões
+        themes.forEach(t => {
+            document.getElementById('btn-' + t).classList.remove('active');
+        });
+        document.getElementById('btn-' + themeName).classList.add('active');
 
-            // 3. Atualizar o Player do Spotify
-            if (themeName === 'default') {
-                spotifyContainer.classList.remove('visible');
-                setTimeout(() => spotifyContainer.innerHTML = '', 500); // Limpa o iframe após a animação sumir
-            } else {
-                spotifyContainer.innerHTML = spotifyIframes[themeName];
-                spotifyContainer.classList.add('visible');
-            }
+        // 2. Trocar a Classe do Body (Aplica Cores e Background)
+        document.body.className = themeName === 'default' ? '' : 'theme-' + themeName;
+
+        // 3. Atualizar o Player do Spotify
+        if (themeName === 'default') {
+            spotifyContainer.classList.remove('visible');
+            setTimeout(() => spotifyContainer.innerHTML = '', 500);
+        } else {
+            spotifyContainer.innerHTML = spotifyIframes[themeName];
+            spotifyContainer.classList.add('visible');
         }
-    </script>
+    }
+
+    // --- LÓGICA DA AURA DO MOUSE ---
+    const aura = document.getElementById('mouse-aura');
+    let mouseX = window.innerWidth / 2;
+    let mouseY = window.innerHeight / 2;
+    let auraX = mouseX;
+    let auraY = mouseY;
+
+    window.addEventListener('mousemove', (e) => {
+        mouseX = e.clientX;
+        mouseY = e.clientY;
+    });
+
+    function animateAura() {
+        auraX += (mouseX - auraX) * 0.15;
+        auraY += (mouseY - auraY) * 0.15;
+        
+        const offset = aura.offsetWidth / 2;
+        aura.style.transform = `translate(${auraX - offset}px, ${auraY - offset}px)`;
+        
+        requestAnimationFrame(animateAura);
+    }
+    animateAura();
+
+    // Rastreia todos os elementos clicáveis para o Hover da Aura
+    const interactables = document.querySelectorAll('a, button, .theme-btn');
+    
+    interactables.forEach(el => {
+        el.addEventListener('mouseenter', () => {
+            aura.classList.add('aura-hover');
+        });
+        el.addEventListener('mouseleave', () => {
+            aura.classList.remove('aura-hover');
+        });
+    });
+</script>
 </body>
 </html>
