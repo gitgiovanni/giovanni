@@ -226,13 +226,21 @@
         @keyframes scroll { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
 
         /* Estilos do Seletor de Temas & Spotify */
-        .theme-selector { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-top: 15px; }
+        .theme-selector { 
+            display: grid; 
+            grid-template-columns: repeat(4, 1fr); 
+            gap: 8px; 
+            margin-top: 15px; 
+            align-items: stretch; /* Garante que botões na mesma linha tenham a mesma altura */
+        }
 .theme-btn { 
             background: rgba(0,0,0,0.5); border: 1px solid var(--glass-border); border-radius: 8px; 
             padding: 10px 5px; color: #fff; font-family: 'Orbitron'; font-size: 0.65rem; font-weight: 700;
             cursor: pointer; transition: 0.3s; display: flex; flex-direction: column; align-items: center; gap: 6px;
-            white-space: nowrap; /* Previne a quebra de linha que estava esticando o botão */
+            white-space: nowrap; 
             overflow: hidden;
+            justify-content: center; /* Centraliza o conteúdo verticalmente */
+            min-height: 55px; /* Trava uma altura mínima para todos */
         }
         .theme-btn:hover { background: var(--glass-border); transform: translateY(-2px); }
         .theme-btn span { font-size: 1.3rem; }
